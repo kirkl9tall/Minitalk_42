@@ -33,14 +33,12 @@ int main (int argc , char *argv[])
 {
 	if  (argc != 3)
 	{
-		printf("usage %s  <server PID> <char >\n",argv[0]);
+		write(1," Usage  Error  you need  <PID> <MSG>\n ",38);
 		return (1);
 	}
 
 	pid_t server_pid = atoi(argv[1]);
 	char *c = argv[2];
-
-	printf ("sending the char  %s to the server\n",c);
 	send_string(server_pid,c);
 	return (0);
 }
