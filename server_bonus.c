@@ -37,25 +37,30 @@ void signal_handler (int sig, siginfo_t *info, void *context)
     bit_count++;
     if (bit_count == 8)
     {	
-		write(1,&received_char,1);
-	    bit_count = 0;
+		if (received_char != '\0')
+			write(1,&received_char,1);
+		else 
+			kill (info->si_pid, SIGUSR2);
+		bit_count = 0;
         received_char = 0;
     }
 }
 
 int main ()
 {
-    int pid;
+    int pid = getpid();
 
-    pid = getpid();
     ft_putnbr(pid);
+
     write(1,"\n",1);
+
     struct sigaction sa;
     sa.sa_sigaction = signal_handler;
     sa.sa_flags = SA_SIGINFO;
     sigemptyset (&sa.sa_mask);
     sigaction(SIGUSR1, &sa, NULL);
     sigaction (SIGUSR2, &sa, NULL);
+    
     while (1)
     {
         pause();
