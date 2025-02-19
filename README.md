@@ -7,3 +7,6 @@ The server listens for these signals, decodes them into characters, and prints t
 The project demonstrates the use of low-level system features in C, such as signal handling, process management, and binary data encoding/decoding, to establish simple but efficient communication between processes.
 
 The goal of this project is to deepen the understanding of UNIX signals and the importance of signal handling in system-level programming.
+
+#GUID MEDIUM ARCITLE : 
+https://medium.com/@gamerazer007/minitalk-42-project-guide-be45d74f8dfa  
