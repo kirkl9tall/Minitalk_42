@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: abismail <abismail@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/18 17:01:41 by abismail          #+#    #+#             */
-/*   Updated: 2025/02/18 17:09:50 by abismail         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minitalk.h"
 
 void	ft_putnbr(int number)
@@ -47,9 +35,14 @@ void	signal_handler(int sig, siginfo_t *info, void *context)
 	if (sig == SIGUSR2)
 		received_char |= 1;
 	bit_count++;
+	kill(info->si_pid, SIGUSR2);
+
 	if (bit_count == 8)
 	{
-		write(1, &received_char, 1);
+		if (received_char != '\0')
+			write(1, &received_char, 1);
+		else
+			write(1, "\n", 1);
 		bit_count = 0;
 		received_char = 0;
 	}
