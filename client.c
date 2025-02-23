@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abismail <abismail@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/23 14:30:38 by abismail          #+#    #+#             */
+/*   Updated: 2025/02/23 14:54:37 by abismail         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 volatile sig_atomic_t	g_sign_received = 0;
@@ -7,6 +19,7 @@ void	acknowledgment_handler(int sig)
 	(void)sig;
 	g_sign_received = 1;
 }
+
 int	ft_atoi(const char *nptr)
 {
 	int	x;
@@ -42,7 +55,7 @@ void	send_char(pid_t server_pid, char c)
 	i = 8;
 	while (i--)
 	{
-		g_sign_received = 0; 
+		g_sign_received = 0;
 		if ((c >> i) & 1)
 			kill(server_pid, SIGUSR2);
 		else
@@ -65,20 +78,19 @@ void	send_string(pid_t server_pid, char *str)
 
 int	main(int argc, char *argv[])
 {
-	pid_t	server_pid;
-	char	*str;
+	struct sigaction	sa;
+	pid_t				server_pid;
+	char				*str;
 
 	if (argc != 3)
 	{
 		write(1, "usage: <server PID> <string>\n", 29);
 		return (1);
 	}
-	struct sigaction sa;
 	sa.sa_handler = acknowledgment_handler;
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR2, &sa, NULL);
-
 	server_pid = ft_atoi(argv[1]);
 	str = argv[2];
 	send_string(server_pid, str);
